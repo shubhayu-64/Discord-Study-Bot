@@ -13,7 +13,7 @@ Discord-Study-Bot is an open-source solution for implementing a Study-Time-based
 
 1. Clone the repo or download manually.
 ```bash
-https://github.com/shubhayu-64/Discord-Study-Bot.git
+git clone https://github.com/shubhayu-64/Discord-Study-Bot.git
 ``` 
 2. Move to cloned/downloaded directory ``` cd Discord-Study-Bot```
 3. Use [pip](https://pip.pypa.io/en/stable/) to install Discord-Study-Bot. 
@@ -36,8 +36,7 @@ pip install -r requirements.txt
 ## FAQ
 
 * I don't see my bot on my server!<br>
-     Invite it by using this URL: https://discordapp.com/oauth2/authorize? 
-      client_id=CLIENT_ID&scope=bot<br>
+     Invite it by using this URL: https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot<br>
      Remember to replace CLIENT_ID with your bot client ID
 * There aren't that many commands here...<br>
       Have any suggestion for a feature? Feel free to raise an issue.
