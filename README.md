@@ -28,6 +28,7 @@ pip install -r requirements.txt
 
 - Join your Discord bot on your server.
 - Build Study text and voice channel and add them in study-bot.py
+![Study Channels](https://drive.google.com/file/d/1MGthRbKtkXXvqUdUeK-sFrcA5Kqp-ERK/view?usp=sharing)
 - Replace Channel IDs with your channel IDs.
 - Add your studying discord role.
 - Run ``` python study-bot.py```
