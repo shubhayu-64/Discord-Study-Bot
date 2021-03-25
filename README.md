@@ -34,7 +34,7 @@ pip install -r requirements.txt
 ![Study Channels](https://i.pinimg.com/originals/2d/b7/43/2db74372de4cbc31f22e5515bfca06e0.png)<br><br>
 - Replace Channel IDs with your channel IDs.
 - Add your studying discord role.<br><br>
-![Studing Role](https://i.pinimg.com/originals/56/7e/83/567e8373382d1a13973beed20a2f1751.png)<br><br>
+![Studing Role](https://i.pinimg.com/originals/56/7e/83/567e8373382d1a13973beed20a2f1751.png =50x50)<br><br>
 - Run ``` python study-bot.py```
 - Type ``` +help``` in your server.
 
