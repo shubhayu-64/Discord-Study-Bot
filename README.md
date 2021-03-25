@@ -1,4 +1,7 @@
 # Discord-Study-Bot
+<p align="left">
+<a href="https://github.com/shubhayu-64/Discord-Study-Bot/blob/main/LICENSE" alt="Lisence"><img src="https://img.shields.io/github/license/shubhayu-64/Discord-Study-Bot"></a> <a href="https://github.com/shubhayu-64/Discord-Study-Bot/issues" alt="Issues"><img src="https://img.shields.io/github/issues/shubhayu-64/Discord-Study-Bot"></a> <a href="https://twitter.com/intent/follow?screen_name=shubhayu64" alt="Twiter-Follow"><img src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fshubhayu64"></a>
+</p>
 
 Discord-Study-Bot is an open-source solution for implementing a Study-Time-based leaderboard system in discord servers. This features an Overall leaderboard and leaderboards based on a Daily, Weekly, and Monthly basis.
 
