@@ -1,6 +1,5 @@
 pymongo==3.11.3
-schedule==1.0.0
 pytz==2021.1
 discord.py==1.6.0
 discord==1.0.1
-pymongo[srv]
+dnspython==2.1.0

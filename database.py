@@ -46,20 +46,17 @@ def member_details(member_id):
 
 # Resets daily time of all members
 def resetDaily():
-    collection.update({}, {"$set": {"dailyTime": 0}})
+    collection.update_many({}, {"$set": {"dailyTime": 0}})
 
 
 # Resets weekly time of all members
 def resetWeekly():
-    collection.update({}, {"$set": {"weeklyTime": 0}})
+    collection.update_many({}, {"$set": {"weeklyTime": 0}})
 
 
 # Resets monthly time of all members
 def resetMonthly():
-    now = datetime.datetime.now(timezone('Asia/Kolkata'))
-    if int(now.day) != 1:
-        return
-    collection.update({}, {"$set": {"monthlyTime": 0}})
+    collection.update_many({}, {"$set": {"monthlyTime": 0}})
 
 
 # Updates total Study time for members when they leave.
