@@ -27,6 +27,14 @@ pip install -r requirements.txt
 5. Make a remote database in [MongoDB](https://www.mongodb.com/) and fill in database.py with your cluster, database, and collection.
 
 
+## Deploy on heroku
+- Create a new app in heroku and choose your relevant region.
+- Fork this repo and make it private. 
+- Add your API keys or follow 4. and 5. of Installation.
+- Add a Procfile with worker as study-bot.py
+- Add deployment method as Github in the website.
+- Go ahead and deploy on heroku.
+
 ## Usage
 
 - Join your Discord bot on your server.
