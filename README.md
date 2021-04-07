@@ -54,5 +54,5 @@ Please make sure to update tests as appropriate.
 [MIT © Shubhayu Majumdar](https://github.com/shubhayu-64/Discord-Study-Bot/blob/main/LICENSE/)
 
 ## What next?
-I will be working on deploying it on heroku. Add more interesting features related to studying in discord.
+I will be working on deploying it on heroku. Add more interesting features related to studying in discord.<br>
 Please open an issue with your feature idea.
