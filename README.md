@@ -62,5 +62,6 @@ Please make sure to update tests as appropriate.
 [MIT © Shubhayu Majumdar](https://github.com/shubhayu-64/Discord-Study-Bot/blob/main/LICENSE/)
 
 ## What next?
-I will be working on deploying it on heroku. Add more interesting features related to studying in discord.<br>
+- Add feature to reply back with last study time when a user leaves study room.
+- Add a notification when a user overtakes another user in leaderboards.
 Please open an issue with your feature idea.
