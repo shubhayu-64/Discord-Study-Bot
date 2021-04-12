@@ -63,5 +63,5 @@ Please make sure to update tests as appropriate.
 
 ## What next?
 - Add feature to reply back with last study time when a user leaves study room.
-- Add a notification when a user overtakes another user in leaderboards.
+- Add a notification when a user overtakes another user in leaderboards.<br>
 Please open an issue with your feature idea.
