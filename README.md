@@ -65,3 +65,13 @@ Please make sure to update tests as appropriate.
 - Add feature to reply back with last study time when a user leaves study room.
 - Add a notification when a user overtakes another user in leaderboards.<br>
 Please open an issue with your feature idea.
+
+## 🙋‍♂️ Support
+
+💙 If you like this project, give it a ⭐ and share it with friends!
+[☕ Buy me a coffee](https://www.buymeacoffee.com/shubhayu64)
+
+---
+
+Made with ❤️ and Python
+<a href="https://heroku.com/"><img alt="Powered by Heroku" title="Powered by Heroku" src="https://img.shields.io/badge/-Powered%20by%20Heroku-6567a5?style=for-the-badge&logo=heroku&logoColor=white"/></a>
