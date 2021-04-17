@@ -68,10 +68,10 @@ Please open an issue with your feature idea.
 
 ## 🙋‍♂️ Support
 
-💙 If you like this project, give it a ⭐ and share it with friends!<br>
+💙 If you like this project, give it a ⭐ and share it with friends!<br><br>
 [☕ Buy me a coffee](https://www.buymeacoffee.com/shubhayu64)
 
 ---
 
-Made with ❤️ and Python <br>
+Made with ❤️ and Python <br><br>
 <a href="https://heroku.com/"><img alt="Powered by Heroku" title="Powered by Heroku" src="https://img.shields.io/badge/-Powered%20by%20Heroku-6567a5?style=for-the-badge&logo=heroku&logoColor=white"/></a>
