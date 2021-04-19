@@ -3,13 +3,13 @@ import discord
 from pymongo import MongoClient
 import datetime
 from pytz import timezone
+import config
 
 
-cluster = MongoClient(
-    "Replace this with your MongoDB client link")
+cluster = MongoClient(config.mongoClient)
 
-db = cluster["Replace with your cluster name"]
-collection = db["Replace with your collection name"]
+db = cluster[config.clusterName]
+collection = db[config.collectionName]
 
 
 def daily_leaderboard():

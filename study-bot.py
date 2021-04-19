@@ -3,6 +3,7 @@ from discord.ext import commands, tasks
 from database import *
 import schedule
 import time
+import config
 
 # List of Study Voice Channels in the server
 studyList = [
@@ -244,12 +245,5 @@ async def on_voice_state_update(member, before, after):
         end(member)
 
 
-# Fetches token for Discord API
-def read_token():
-    with open("token.txt", "r") as f:
-        lines = f.readlines()
-        return lines[0].strip()
-
-
 if __name__ == "__main__":
-    client.run(read_token())
+    client.run(config.discordToken)
