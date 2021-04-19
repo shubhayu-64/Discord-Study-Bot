@@ -23,8 +23,8 @@ git clone https://github.com/shubhayu-64/Discord-Study-Bot.git
 ```bash
 pip install -r requirements.txt
 ```
-4. Make a bot from [Discord Developer Portal](https://discord.com/developers/applications) and grab the token and fill in token.txt
-5. Make a remote database in [MongoDB](https://www.mongodb.com/) and fill in database.py with your cluster, database, and collection.
+4. Make a bot from [Discord Developer Portal](https://discord.com/developers/applications) and grab the token and fill in config.py
+5. Make a remote database in [MongoDB](https://www.mongodb.com/) and fill in config.py with your cluster, database, and collection.
 
 
 ## Deploy on heroku
