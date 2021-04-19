@@ -69,7 +69,7 @@ Please open an issue with your feature idea.
 ## 🙋‍♂️ Support
 
 💙 If you like this project, give it a ⭐ and share it with friends!<br><br>
-[☕ Buy me a coffee](https://www.buymeacoffee.com/shubhayu64)
+[☕ Buy me a coffee](https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js)
 
 ---
 
