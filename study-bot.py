@@ -19,17 +19,21 @@ client.remove_command('help')
 bot_image_url = "https://i.pinimg.com/564x/c9/4e/e1/c94ee183a2e635e5b8972bc0240ad23a.jpg"
 
 
-# Prints a message once bot becomes ready
 @client.event
 async def on_ready():
+    """
+    Prints a message once bot becomes ready.
+    """
     await client.change_presence(activity=discord.Game("+help"))
     print(f'{client.user} is running')
     reset.start()
 
 
-# Resets leaderboards everyday.
 @tasks.loop(minutes=60)
 async def reset():
+    """
+    Resets leaderboards everyday.
+    """
     now = datetime.datetime.now(timezone('Asia/Kolkata'))
     if now.hour == 0:
         resetDaily()
@@ -39,15 +43,27 @@ async def reset():
             resetMonthly()
 
 
-# Shows the ping (in milli-seconds) of the bot
 @client.command()
 async def ping(ctx):
+    """
+    Shows the ping (in milli-seconds) of the bot.
+
+    :param ctx:
+        The command context
+
+    """
     await ctx.send(f'pong : {round(client.latency * 1000)} ms')
 
 
-# Returns embedded text of a member's overall data
 @client.command(name="mystats")
 async def my_stats_command(ctx):
+    """
+    Returns embedded text of a member's overall data.
+
+    :param ctx:
+        The command context
+
+    """
     member_id = str(ctx.author.id)
     channel = client.get_channel(config.study_text_channel)
     member = member_details(member_id)
@@ -85,10 +101,16 @@ async def my_stats_command(ctx):
     await channel.send(embed=embed)
 
 
-# Returns embedded text of daily leaderboard.
-# Top 10 members with highest study time in the day.
 @client.command()
-async def lb_d(ctx):
+async def lb_d(_ctx):
+    """
+    Returns embedded text of daily leaderboard.
+    Top 10 members with highest study time in the day.
+
+    :param _ctx:
+        The command context, unused but needed.
+
+    """
     channel = client.get_channel(config.study_text_channel)
     leaderboard = daily_leaderboard()
     description = ""
@@ -113,10 +135,16 @@ async def lb_d(ctx):
     )
 
 
-# Returns embedded text of weekly leaderboard.
-# Top 10 members with highest study time in the week.
 @client.command()
-async def lb_w(ctx):
+async def lb_w(_ctx):
+    """
+    Returns embedded text of weekly leaderboard.
+    Top 10 members with highest study time in the week.
+
+    :param _ctx:
+        The command context, unused but needed.
+
+    """
     channel = client.get_channel(config.study_text_channel)
     leaderboard = weekly_leaderboard()
     description = ""
@@ -141,10 +169,16 @@ async def lb_w(ctx):
     )
 
 
-# Returns embedded text of monthly leaderboard.
-# Top 10 members with highest study time in the month.
 @client.command()
-async def lb_m(ctx):
+async def lb_m(_ctx):
+    """
+    Returns embedded text of monthly leaderboard.
+    Top 10 members with highest study time in the month.
+
+    :param _ctx:
+        The command context, unused but needed.
+
+    """
     channel = client.get_channel(config.study_text_channel)
     leaderboard = monthly_leaderboard()
     description = ""
@@ -169,10 +203,16 @@ async def lb_m(ctx):
     )
 
 
-# Returns embedded text of overall leaderboard.
-# Top 10 members with highest study time overall.
 @client.command()
-async def leaderboard(ctx):
+async def leaderboard(_ctx):
+    """
+    Returns embedded text of overall leaderboard.
+    Top 10 members with highest study time overall.
+
+    :param _ctx:
+        The command context, unused but needed.
+
+    """
     channel = client.get_channel(config.study_text_channel)
     leaderboard = member_leaderboard()
     description = ""
@@ -197,9 +237,15 @@ async def leaderboard(ctx):
     )
 
 
-# Returns embedded text of details of all commands.
 @client.command(name="help")
 async def help_command(ctx):
+    """
+    Returns embedded text of details of all commands.
+
+    :param ctx:
+        The command context
+
+    """
     await ctx.send(
         embed=discord.Embed(
             color=0x4be96d,
@@ -228,10 +274,21 @@ def check_after_flag(after_channel):
     return after_channel != "None" and after_channel in config.study_list
 
 
-# Assigns a discord role -> "studying" to everyone who joins study channels.
-# Sends messages on user join and leave.
 @client.event
 async def on_voice_state_update(member, before, after):
+    """
+    Assigns a discord role -> "studying" to everyone who joins study channels.
+    Sends messages on user join and leave.
+
+    :param member:
+        The guild member that updated his voice state
+
+    :param before:
+        The state before the voice state was updated
+    :param after:
+        The state after the voice was updated
+
+    """
     if member.bot:
         return
 

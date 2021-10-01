@@ -42,23 +42,34 @@ def member_details(member_id):
     return member if str(member) != "none" else None
 
 
-# Resets daily time of all members
 def resetDaily():
+    """
+    Resets daily time of all members
+    """
     collection.update_many({}, {"$set": {"dailyTime": 0}})
 
 
-# Resets weekly time of all members
 def resetWeekly():
+    """
+    Resets weekly time of all members
+    """
     collection.update_many({}, {"$set": {"weeklyTime": 0}})
 
 
-# Resets monthly time of all members
 def resetMonthly():
+    """
+    Resets monthly time of all members.
+    """
     collection.update_many({}, {"$set": {"monthlyTime": 0}})
 
 
-# Updates total Study time for members when they leave.
 def end(member: discord.Member):
+    """
+    Updates total Study time for members when they leave.
+
+    :param member:
+        The member that left the voice channel.
+    """
     now = datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
     user = collection.find_one({"_id": str(member.id)})
 
@@ -98,8 +109,20 @@ def end(member: discord.Member):
     )
 
 
-# Updates join data for existing members
-def update_join(member: discord.Member, before_flag, after_flag):
+def update_join(member: discord.Member, _before_flag, _after_flag):
+    """
+    Updates join data for existing members
+
+    :param member:
+        The member who joined the study channel
+
+    :param _before_flag:
+        The flag before the member joined the study channel
+
+    :param _after_flag:
+        The flag after the member joined the study channel
+
+    """
     now = datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
     collection.update_one(
         {"_id": str(member.id)},
@@ -112,8 +135,19 @@ def update_join(member: discord.Member, before_flag, after_flag):
     )
 
 
-# Adds new entry in database for new members.
-def add(member: discord.Member, before_flag, after_flag):
+def add(member: discord.Member, _before_flag, _after_flag):
+    """
+    Adds new entry in database for new members.
+
+    :param member:
+        The member who joined the study channel
+
+    :param _before_flag:
+        The flag before the member joined the study channel
+
+    :param _after_flag:
+        The flag after the member joined the study channel
+    """
     now = datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
     post = {
         "_id": str(member.id),
@@ -127,8 +161,19 @@ def add(member: discord.Member, before_flag, after_flag):
     collection.insert_one(post)
 
 
-# Called once member joins study channel
 def join(member: discord.Member, before_flag, after_flag):
+    """
+    Called once member joins study channel.
+
+    :param member:
+        The member who joined the study channel
+
+    :param before_flag:
+        The flag before the member joined the study channel
+
+    :param after_flag:
+        The flag after the member joined the study channel
+    """
     if before_flag == after_flag:
         return
 
