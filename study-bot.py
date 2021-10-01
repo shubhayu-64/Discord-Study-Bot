@@ -203,8 +203,8 @@ async def lb_m(_ctx):
     )
 
 
-@client.command()
-async def leaderboard(_ctx):
+@client.command(name="leaderboard")
+async def leaderboard_command(_ctx):
     """
     Returns embedded text of overall leaderboard.
     Top 10 members with highest study time overall.
@@ -226,7 +226,7 @@ async def leaderboard(_ctx):
         )
 
     await channel.send(
-        discord.Embed(
+        embed=discord.Embed(
             title='Study Stats Leaderboard (MEMBER TIME)',
             color=0x4be96d,
             description=description
@@ -298,11 +298,15 @@ async def on_voice_state_update(member, before, after):
 
     if not before_flag and not after_flag:
         return
+
     if before.channel == after.channel:
         return
 
+    guild = None
+
     if before_flag:
         guild = before.channel.guild
+
     if after_flag:
         guild = after.channel.guild
 
