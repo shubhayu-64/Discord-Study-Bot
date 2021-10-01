@@ -101,6 +101,31 @@ async def my_stats_command(ctx):
     await channel.send(embed=embed)
 
 
+async def send_leaderboard(key, leaderboard):
+    channel = client.get_channel(config.study_text_channel)
+    description = ""
+
+    for rank, members in enumerate(leaderboard, start=1):
+        minutes = members[f'{key}Time']
+
+        description += str(
+            f"#{rank}\t|\t**{members['name#']}**\t|"
+            f"\t**{minutes // 60}** Hours "
+            f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
+        )
+
+    await channel.send(
+        embed=discord.Embed(
+            title=f'Study Stats Leaderboard ({key.upper()} TIME)',
+            color=0x4be96d,
+            description=description
+        ).set_footer(
+            icon_url=bot_image_url,
+            text="Study-Bot\nOther Valid Commands : leaderboard, lb_m, lb_w"
+        )
+    )
+
+
 @client.command()
 async def lb_d(_ctx):
     """
@@ -111,28 +136,7 @@ async def lb_d(_ctx):
         The command context, unused but needed.
 
     """
-    channel = client.get_channel(config.study_text_channel)
-    leaderboard = daily_leaderboard()
-    description = ""
-
-    for rank, members in enumerate(leaderboard, start=1):
-        minutes = members["dailyTime"]
-
-        description += str(
-            f"#{rank}\t|\t**{members['name#']}**\t|"
-            f"\t**{minutes // 60}** Hours "
-            f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
-        )
-
-    await channel.send(
-        embed=discord.Embed(
-            title='Study Stats Leaderboard (DAILY TIME)', color=0x4be96d,
-            description=description
-        ).set_footer(
-            icon_url=bot_image_url,
-            text="Study-Bot\nOther Valid Commands : leaderboard, lb_m, lb_w"
-        )
-    )
+    await send_leaderboard('daily', daily_leaderboard())
 
 
 @client.command()
@@ -145,28 +149,7 @@ async def lb_w(_ctx):
         The command context, unused but needed.
 
     """
-    channel = client.get_channel(config.study_text_channel)
-    leaderboard = weekly_leaderboard()
-    description = ""
-
-    for rank, members in enumerate(leaderboard, start=1):
-        minutes = members["weeklyTime"]
-        description += str(
-            f"#{rank}\t|\t**{members['name#']}**\t|"
-            f"\t**{minutes // 60}** Hours "
-            f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
-        )
-
-    await channel.send(
-        embed=discord.Embed(
-            title='Study Stats Leaderboard (WEEKLY TIME)',
-            color=0x4be96d,
-            description=description
-        ).set_footer(
-            icon_url=bot_image_url,
-            text="Study-Bot\nOther Valid Commands : leaderboard, lb_m, lb_d"
-        )
-    )
+    await send_leaderboard("weekly", weekly_leaderboard())
 
 
 @client.command()
@@ -179,28 +162,7 @@ async def lb_m(_ctx):
         The command context, unused but needed.
 
     """
-    channel = client.get_channel(config.study_text_channel)
-    leaderboard = monthly_leaderboard()
-    description = ""
-
-    for rank, members in enumerate(leaderboard, start=1):
-        minutes = members["monthlyTime"]
-        description += str(
-            f"#{rank}\t|\t**{members['name#']}**\t|"
-            f"\t**{minutes // 60}** Hours "
-            f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
-        )
-
-    await channel.send(
-        embed=discord.Embed(
-            title='Study Stats Leaderboard (MONTHLY TIME)',
-            color=0x4be96d,
-            description=description
-        ).set_footer(
-            icon_url=bot_image_url,
-            text="Study-Bot\nOther Valid Commands : leaderboard, lb_w, lb_d"
-        )
-    )
+    await send_leaderboard("monthly", monthly_leaderboard())
 
 
 @client.command(name="leaderboard")
@@ -213,28 +175,7 @@ async def leaderboard_command(_ctx):
         The command context, unused but needed.
 
     """
-    channel = client.get_channel(config.study_text_channel)
-    leaderboard = member_leaderboard()
-    description = ""
-
-    for rank, members in enumerate(leaderboard, start=1):
-        minutes = members["memberTime"]
-        description += str(
-            f"#{rank}\t|\t**{members['name#']}**\t|"
-            f"\t**{minutes // 60}** Hours "
-            f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
-        )
-
-    await channel.send(
-        embed=discord.Embed(
-            title='Study Stats Leaderboard (MEMBER TIME)',
-            color=0x4be96d,
-            description=description
-        ).set_footer(
-            icon_url=bot_image_url,
-            text="Study-Bot\nOther Valid Commands : lb_m, lb_w, lb_d"
-        )
-    )
+    await send_leaderboard("member", member_leaderboard())
 
 
 @client.command(name="help")
