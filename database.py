@@ -6,10 +6,10 @@ from pytz import timezone
 import config
 
 
-cluster = MongoClient(config.mongoClient)
+cluster = MongoClient(config.mongo_client)
 
-db = cluster[config.clusterName]
-collection = db[config.collectionName]
+db = cluster[config.cluster_name]
+collection = db[config.collection_name]
 
 
 def daily_leaderboard():

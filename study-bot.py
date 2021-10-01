@@ -4,22 +4,12 @@ from database import *
 import time
 import config
 
-# List of Study Voice Channels in the server
-studyList = [
-    'study-room-1', 'study-room-2 (24/7 Lofi)', 'study-room-3',
-    'Programming-VC (Screensharing)'
-]
-
 # The prefix set for the bot
 client = commands.Bot(command_prefix='+')
 client.remove_command('help')
 
 # Replace with your bot icon image.
 bot_image_url = "https://i.pinimg.com/564x/c9/4e/e1/c94ee183a2e635e5b8972bc0240ad23a.jpg"
-
-# Replace with your study text channel ID. Takes an integer.
-study_text_channel = 817450164234878987
-
 
 # Prints a message once bot becomes ready
 @client.event
@@ -51,7 +41,7 @@ async def ping(ctx):
 @client.command()
 async def mystats(ctx):
     member_id = str(ctx.author.id)
-    channel = client.get_channel(study_text_channel)
+    channel = client.get_channel(config.study_text_channel)
     member = member_details(member_id)
     if member == None:
         await channel.send(
@@ -85,7 +75,7 @@ async def mystats(ctx):
 # Returns embeded text of daily leaderboard. Top 10 members with highest study time in the day.
 @client.command()
 async def lb_d(ctx):
-    channel = client.get_channel(study_text_channel)
+    channel = client.get_channel(config.study_text_channel)
     leaderboard = daily_leaderboard()
     description = ""
     rank = 1
@@ -104,7 +94,7 @@ async def lb_d(ctx):
 # Returns embeded text of weekly leaderboard. Top 10 members with highest study time in the week.
 @client.command()
 async def lb_w(ctx):
-    channel = client.get_channel(study_text_channel)
+    channel = client.get_channel(config.study_text_channel)
     leaderboard = weekly_leaderboard()
     description = ""
     rank = 1
@@ -123,7 +113,7 @@ async def lb_w(ctx):
 # Returns embeded text of monthly leaderboard. Top 10 members with highest study time in the month.
 @client.command()
 async def lb_m(ctx):
-    channel = client.get_channel(study_text_channel)
+    channel = client.get_channel(config.study_text_channel)
     leaderboard = monthly_leaderboard()
     description = ""
     rank = 1
@@ -142,7 +132,7 @@ async def lb_m(ctx):
 # Returns embeded text of overall leaderboard. Top 10 members with highest study time overall.
 @client.command()
 async def leaderboard(ctx):
-    channel = client.get_channel(study_text_channel)
+    channel = client.get_channel(config.study_text_channel)
     leaderboard = member_leaderboard()
     description = ""
     rank = 1
@@ -170,14 +160,14 @@ async def help(ctx):
 
 
 def check_before_flag(before_channel):
-    if before_channel != "None" and before_channel in studyList:
+    if before_channel != "None" and before_channel in config.study_list:
         return True
     else:
         return False
 
 
 def check_after_flag(after_channel):
-    if after_channel != "None" and after_channel in studyList:
+    if after_channel != "None" and after_channel in config.study_list:
         return True
     else:
         return False
@@ -205,7 +195,7 @@ async def on_voice_state_update(member, before, after):
 
     # Sets roles for study channels.
     role = discord.utils.get(Guild.roles, name="studying")
-    txt_channel = client.get_channel(study_text_channel)
+    txt_channel = client.get_channel(config.study_text_channel)
 
     # When user joins the voice channel
     if before.channel == None and after.channel != None and after_flag:
@@ -245,4 +235,4 @@ async def on_voice_state_update(member, before, after):
 
 
 if __name__ == "__main__":
-    client.run(config.discordToken)
+    client.run(config.discord_token)
