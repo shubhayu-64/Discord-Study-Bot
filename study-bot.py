@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands, tasks
 from database import *
-import schedule
 import time
 import config
 
