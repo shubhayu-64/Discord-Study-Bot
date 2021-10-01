@@ -1,8 +1,10 @@
-import pymongo
+from datetime import datetime
+
 import discord
+import pymongo
 from pymongo import MongoClient
-import datetime
 from pytz import timezone
+
 import config
 
 cluster = MongoClient(config.mongo_client)
@@ -57,7 +59,7 @@ def resetMonthly():
 
 # Updates total Study time for members when they leave.
 def end(member: discord.Member):
-    now = datetime.datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
+    now = datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
     user = collection.find_one({"_id": str(member.id)})
 
     join_time = str(user["startTime"])
@@ -98,7 +100,7 @@ def end(member: discord.Member):
 
 # Updates join data for existing members
 def update_join(member: discord.Member, before_flag, after_flag):
-    now = datetime.datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
+    now = datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
     collection.update_one(
         {"_id": str(member.id)},
         {
@@ -112,7 +114,7 @@ def update_join(member: discord.Member, before_flag, after_flag):
 
 # Adds new entry in database for new members.
 def add(member: discord.Member, before_flag, after_flag):
-    now = datetime.datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
+    now = datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
     post = {
         "_id": str(member.id),
         "memberTime": 0,
