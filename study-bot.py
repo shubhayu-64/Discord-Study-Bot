@@ -1,22 +1,30 @@
-import datetime
+from __future__ import annotations
+from typing import Dict, Optional, TYPE_CHECKING
+
 import discord
+from discord.ext import commands, tasks
+from discord.ext.commands import Context
 from pytz import timezone
 
 import config
-
-from discord.ext import commands, tasks
-
-# The prefix set for the bot
+from database import datetime
 from database import (
     resetDaily, resetWeekly, resetMonthly, member_details, daily_leaderboard,
     weekly_leaderboard, monthly_leaderboard, member_leaderboard, end, join
 )
 
+if TYPE_CHECKING:
+    from discord import TextChannel, Member, Guild, Role
+
+
+# The prefix set for the bot
 client = commands.Bot(command_prefix='+')
 client.remove_command('help')
 
 # Replace with your bot icon image.
-bot_image_url = "https://i.pinimg.com/564x/c9/4e/e1/c94ee183a2e635e5b8972bc0240ad23a.jpg"
+BOT_IMAGE_URL: str = (
+    "https://i.pinimg.com/564x/c9/4e/e1/c94ee183a2e635e5b8972bc0240ad23a.jpg"
+)
 
 
 @client.event
@@ -34,17 +42,21 @@ async def reset():
     """
     Resets leaderboards everyday.
     """
-    now = datetime.datetime.now(timezone('Asia/Kolkata'))
-    if now.hour == 0:
-        resetDaily()
-        if now.weekday() == 0:
-            resetWeekly()
-        if now.day == 1:
-            resetMonthly()
+    now: datetime = datetime.now(timezone('Asia/Kolkata'))
+    if now.hour != 0:
+        return
+
+    resetDaily()
+
+    if now.weekday() == 0:
+        resetWeekly()
+
+    if now.day == 1:
+        resetMonthly()
 
 
 @client.command()
-async def ping(ctx):
+async def ping(ctx: Context):
     """
     Shows the ping (in milli-seconds) of the bot.
 
@@ -56,7 +68,7 @@ async def ping(ctx):
 
 
 @client.command(name="mystats")
-async def my_stats_command(ctx):
+async def my_stats_command(ctx: Context):
     """
     Returns embedded text of a member's overall data.
 
@@ -65,7 +77,7 @@ async def my_stats_command(ctx):
 
     """
     member_id = str(ctx.author.id)
-    channel = client.get_channel(config.study_text_channel)
+    channel: TextChannel = client.get_channel(config.study_text_channel)
     member = member_details(member_id)
 
     if member is None:
@@ -75,7 +87,7 @@ async def my_stats_command(ctx):
         )
         return
 
-    minutes = {
+    minutes: Dict[str, int] = {
         'member': int(member['memberTime']),
         'monthly': int(member['monthlyTime']),
         'weekly': int(member['weeklyTime']),
@@ -94,14 +106,14 @@ async def my_stats_command(ctx):
                   f"{minute_count - 60 * (minute_count // 60)} Minutes",
             inline=False
         ).set_footer(
-            icon_url=bot_image_url,
+            icon_url=BOT_IMAGE_URL,
             text="Study-Bot"
         )
 
     await channel.send(embed=embed)
 
 
-async def send_leaderboard(key, leaderboard):
+async def send_leaderboard(key: str, leaderboard):
     channel = client.get_channel(config.study_text_channel)
     description = ""
 
@@ -120,14 +132,14 @@ async def send_leaderboard(key, leaderboard):
             color=0x4be96d,
             description=description
         ).set_footer(
-            icon_url=bot_image_url,
+            icon_url=BOT_IMAGE_URL,
             text="Study-Bot\nOther Valid Commands : leaderboard, lb_m, lb_w"
         )
     )
 
 
 @client.command()
-async def lb_d(_ctx):
+async def lb_d(_ctx: Context):
     """
     Returns embedded text of daily leaderboard.
     Top 10 members with highest study time in the day.
@@ -140,7 +152,7 @@ async def lb_d(_ctx):
 
 
 @client.command()
-async def lb_w(_ctx):
+async def lb_w(_ctx: Context):
     """
     Returns embedded text of weekly leaderboard.
     Top 10 members with highest study time in the week.
@@ -153,7 +165,7 @@ async def lb_w(_ctx):
 
 
 @client.command()
-async def lb_m(_ctx):
+async def lb_m(_ctx: Context):
     """
     Returns embedded text of monthly leaderboard.
     Top 10 members with highest study time in the month.
@@ -166,7 +178,7 @@ async def lb_m(_ctx):
 
 
 @client.command(name="leaderboard")
-async def leaderboard_command(_ctx):
+async def leaderboard_command(_ctx: Context):
     """
     Returns embedded text of overall leaderboard.
     Top 10 members with highest study time overall.
@@ -179,7 +191,7 @@ async def leaderboard_command(_ctx):
 
 
 @client.command(name="help")
-async def help_command(ctx):
+async def help_command(ctx: Context):
     """
     Returns embedded text of details of all commands.
 
@@ -201,22 +213,22 @@ async def help_command(ctx):
                   "m - monthly, w - weekly, d - daily\n"
                   "`leaderboard` : shows overall top 10 studytime leaderboard"
         ).set_footer(
-            icon_url=bot_image_url,
+            icon_url=BOT_IMAGE_URL,
             text="Study-Bot"
         )
     )
 
 
-def check_before_flag(before_channel):
+def check_before_flag(before_channel: str) -> bool:
     return before_channel != "None" and before_channel in config.study_list
 
 
-def check_after_flag(after_channel):
+def check_after_flag(after_channel: str) -> bool:
     return after_channel != "None" and after_channel in config.study_list
 
 
 @client.event
-async def on_voice_state_update(member, before, after):
+async def on_voice_state_update(member: Member, before, after):
     """
     Assigns a discord role -> "studying" to everyone who joins study channels.
     Sends messages on user join and leave.
@@ -226,6 +238,7 @@ async def on_voice_state_update(member, before, after):
 
     :param before:
         The state before the voice state was updated
+
     :param after:
         The state after the voice was updated
 
@@ -243,17 +256,17 @@ async def on_voice_state_update(member, before, after):
     if before.channel == after.channel:
         return
 
-    guild = None
+    guild: Optional[Guild] = None
 
     if before_flag:
-        guild = before.channel.guild
+        guild: Guild = before.channel.guild
 
     if after_flag:
-        guild = after.channel.guild
+        guild: Guild = after.channel.guild
 
     # Sets roles for study channels.
-    role = discord.utils.get(guild.roles, name="studying")
-    txt_channel = client.get_channel(config.study_text_channel)
+    role: Role = discord.utils.get(guild.roles, name="studying")
+    txt_channel: TextChannel = client.get_channel(config.study_text_channel)
 
     # When user joins the voice channel
     if before.channel is None and after.channel is not None and after_flag:
