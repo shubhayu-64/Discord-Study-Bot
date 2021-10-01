@@ -5,7 +5,6 @@ import datetime
 from pytz import timezone
 import config
 
-
 cluster = MongoClient(config.mongo_client)
 
 db = cluster[config.cluster_name]
@@ -13,35 +12,32 @@ collection = db[config.collection_name]
 
 
 def daily_leaderboard():
-    leaderboard = list(collection.find({}).sort(
- "dailyTime", pymongo.DESCENDING))[:10]
-    return leaderboard
+    return list(collection.find({}).sort(
+        "dailyTime", pymongo.DESCENDING)
+    )[:10]
 
 
 def weekly_leaderboard():
-    leaderboard = list(collection.find({}).sort(
-        "weeklyTime", pymongo.DESCENDING))[:10]
-    return leaderboard
+    return list(collection.find({}).sort(
+        "weeklyTime", pymongo.DESCENDING)
+    )[:10]
 
 
 def monthly_leaderboard():
-    leaderboard = list(collection.find({}).sort(
-        "monthlyTime", pymongo.DESCENDING))[:10]
-    return leaderboard
+    return list(collection.find({}).sort(
+        "monthlyTime", pymongo.DESCENDING)
+    )[:10]
 
 
 def member_leaderboard():
-    leaderboard = list(collection.find({}).sort(
-        "memberTime", pymongo.DESCENDING))[:10]
-    return leaderboard
+    return list(collection.find({}).sort(
+        "memberTime", pymongo.DESCENDING)
+    )[:10]
 
 
 def member_details(member_id):
     member = collection.find_one({"_id": member_id})
-    if str(member) == "none":
-        return None
-    else:
-        return member
+    return member if str(member) != "none" else None
 
 
 # Resets daily time of all members
@@ -69,23 +65,13 @@ def end(member: discord.Member):
     join_minutes = int(join_hour) * 60 + int(join_minutes)
 
     current_hour, current_minutes = now.split(':')
-    current_minutes = int(current_hour)*60 + int(current_minutes)
+    current_minutes = int(current_hour) * 60 + int(current_minutes)
 
-    difference = 0
-    daily_time = 0
-    weekly_time = 0
-    monthly_time = 0
     if current_minutes < join_minutes:
         daily_time = current_minutes
         difference = (1440 - join_minutes) + current_minutes
-        if int(now.weekday()) == 0:
-            weekly_time = current_minutes
-        else:
-            weekly_time = difference
-        if int(now.day) == 1:
-            monthly_time = current_minutes
-        else:
-            monthly_time = difference
+        weekly_time = current_minutes if int(now.weekday()) == 0 else difference
+        monthly_time = current_minutes if int(now.day) == 1 else difference
     else:
         difference = current_minutes - join_minutes
         daily_time = difference

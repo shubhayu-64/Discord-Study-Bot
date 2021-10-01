@@ -1,8 +1,8 @@
 import discord
+import config
+
 from discord.ext import commands, tasks
 from database import *
-import time
-import config
 
 # The prefix set for the bot
 client = commands.Bot(command_prefix='+')
@@ -32,19 +32,19 @@ async def reset():
             resetMonthly()
 
 
-# Shows the ping (in mili-seconds) of the bot
+# Shows the ping (in milli-seconds) of the bot
 @client.command()
 async def ping(ctx):
     await ctx.send(f'pong : {round(client.latency * 1000)} ms')
 
 
 # Returns embedded text of a member's overall data
-@client.command()
-async def mystats(ctx):
+@client.command(name="mystats")
+async def my_stats_command(ctx):
     member_id = str(ctx.author.id)
     channel = client.get_channel(config.study_text_channel)
     member = member_details(member_id)
-    if member == None:
+    if member is None:
         await channel.send(
             f"Sorry, no records found for "
             f"**{ctx.author.name}#{ctx.author.discriminator}**"
@@ -105,9 +105,8 @@ async def lb_d(ctx):
     channel = client.get_channel(config.study_text_channel)
     leaderboard = daily_leaderboard()
     description = ""
-    rank = 1
 
-    for members in leaderboard:
+    for rank, members in enumerate(leaderboard, start=1):
         minutes = members["dailyTime"]
 
         description += str(
@@ -115,8 +114,6 @@ async def lb_d(ctx):
             f"\t**{minutes // 60}** Hours "
             f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
         )
-
-        rank = rank + 1
 
     embed = discord.Embed(
         title='Study Stats Leaderboard (DAILY TIME)', color=0x4be96d,
@@ -137,17 +134,14 @@ async def lb_w(ctx):
     channel = client.get_channel(config.study_text_channel)
     leaderboard = weekly_leaderboard()
     description = ""
-    rank = 1
 
-    for members in leaderboard:
+    for rank, members in enumerate(leaderboard, start=1):
         minutes = members["weeklyTime"]
         description += str(
             f"#{rank}\t|\t**{members['name#']}**\t|"
             f"\t**{minutes // 60}** Hours "
             f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
         )
-
-        rank = rank + 1
 
     embed = discord.Embed(
         title='Study Stats Leaderboard (WEEKLY TIME)',
@@ -163,24 +157,21 @@ async def lb_w(ctx):
     await channel.send(embed=embed)
 
 
-# Returns embeded text of monthly leaderboard.
+# Returns embedded text of monthly leaderboard.
 # Top 10 members with highest study time in the month.
 @client.command()
 async def lb_m(ctx):
     channel = client.get_channel(config.study_text_channel)
     leaderboard = monthly_leaderboard()
     description = ""
-    rank = 1
 
-    for members in leaderboard:
+    for rank, members in enumerate(leaderboard, start=1):
         minutes = members["monthlyTime"]
         description += str(
             f"#{rank}\t|\t**{members['name#']}**\t|"
             f"\t**{minutes // 60}** Hours "
             f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
         )
-
-        rank = rank + 1
 
     embed = discord.Embed(
         title='Study Stats Leaderboard (MONTHLY TIME)',
@@ -203,17 +194,14 @@ async def leaderboard(ctx):
     channel = client.get_channel(config.study_text_channel)
     leaderboard = member_leaderboard()
     description = ""
-    rank = 1
 
-    for members in leaderboard:
+    for rank, members in enumerate(leaderboard, start=1):
         minutes = members["memberTime"]
         description += str(
             f"#{rank}\t|\t**{members['name#']}**\t|"
             f"\t**{minutes // 60}** Hours "
             f"**{minutes - 60 * (minutes // 60)}** Minutes\n"
         )
-
-        rank = rank + 1
 
     embed = discord.Embed(
         title='Study Stats Leaderboard (MEMBER TIME)',
@@ -247,17 +235,11 @@ async def help(ctx):
 
 
 def check_before_flag(before_channel):
-    if before_channel != "None" and before_channel in config.study_list:
-        return True
-    else:
-        return False
+    return before_channel != "None" and before_channel in config.study_list
 
 
 def check_after_flag(after_channel):
-    if after_channel != "None" and after_channel in config.study_list:
-        return True
-    else:
-        return False
+    return after_channel != "None" and after_channel in config.study_list
 
 
 # Assigns a discord role -> "studying" to everyone who joins study channels.
@@ -286,7 +268,7 @@ async def on_voice_state_update(member, before, after):
     txt_channel = client.get_channel(config.study_text_channel)
 
     # When user joins the voice channel
-    if before.channel == None and after.channel != None and after_flag:
+    if before.channel is None and after.channel is not None and after_flag:
         await member.add_roles(role)
         await (
             await txt_channel.send(
@@ -298,8 +280,7 @@ async def on_voice_state_update(member, before, after):
 
         join(member, before_flag, after_flag)
 
-    # When user leaves the voice channel
-    elif before.channel != None and after.channel == None and before_flag:
+    elif before.channel is not None and after.channel is None and before_flag:
         await member.remove_roles(role)
         await (
             await txt_channel.send(
@@ -309,11 +290,9 @@ async def on_voice_state_update(member, before, after):
         ).delete(delay=60)
         end(member)
 
-    # When user changes study voice channels
     elif before_flag and after_flag:
         print("changed study rooms")
 
-    # When user joins Study Voice Channel from different voice channel
     elif after_flag:
         await member.add_roles(role)
         await (
@@ -325,7 +304,6 @@ async def on_voice_state_update(member, before, after):
         ).delete(delay=60)
         join(member, before_flag, after_flag)
 
-    # When user leaves Study voice channel
     elif before_flag:
         await member.remove_roles(role)
         await (
