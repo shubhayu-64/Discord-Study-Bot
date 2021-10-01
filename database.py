@@ -14,7 +14,7 @@ collection = db[config.collection_name]
 
 def daily_leaderboard():
     leaderboard = list(collection.find({}).sort(
-        "dailyTime", pymongo.DESCENDING))[:10]
+ "dailyTime", pymongo.DESCENDING))[:10]
     return leaderboard
 
 
@@ -92,26 +92,50 @@ def end(member: discord.Member):
         weekly_time = difference
         monthly_time = difference
 
-    collection.update_one({"_id": str(member.id)}, {"$inc": {"memberTime": int(difference),
-                                                             "monthlyTime": int(monthly_time),
-                                                             "weeklyTime": int(weekly_time),
-                                                             "dailyTime": int(daily_time)}})
-    collection.update_one({"_id": str(member.id)}, {
-                          "$set": {"startTime": 0}})
+    collection.update_one(
+        {"_id": str(member.id)},
+        {
+            "$inc": {
+                "memberTime": int(difference),
+                "monthlyTime": int(monthly_time),
+                "weeklyTime": int(weekly_time),
+                "dailyTime": int(daily_time)
+            }
+        }
+    )
+
+    collection.update_one(
+        {"_id": str(member.id)},
+        {"$set": {"startTime": 0}}
+    )
 
 
 # Updates join data for existing members
 def update_join(member: discord.Member, before_flag, after_flag):
     now = datetime.datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
-    collection.update_one({"_id": str(member.id)}, {
-                          "$set": {"startTime": now,  "name#": str(member.name + "#" + member.discriminator)}})
+    collection.update_one(
+        {"_id": str(member.id)},
+        {
+            "$set": {
+                "startTime": now,
+                "name#": str(member.name + "#" + member.discriminator)
+            }
+        }
+    )
 
 
 # Adds new entry in database for new members.
 def add(member: discord.Member, before_flag, after_flag):
     now = datetime.datetime.now(timezone('Asia/Kolkata')).strftime("%H:%M")
-    post = {"_id": str(member.id), "memberTime": 0, "monthlyTime": 0, "weeklyTime": 0,
-            "dailyTime": 0, "startTime": now, "name#": str(member.name + "#" + member.discriminator)}
+    post = {
+        "_id": str(member.id),
+        "memberTime": 0,
+        "monthlyTime": 0,
+        "weeklyTime": 0,
+        "dailyTime": 0,
+        "startTime": now,
+        "name#": str(member.name + "#" + member.discriminator)
+    }
     collection.insert_one(post)
 
 
