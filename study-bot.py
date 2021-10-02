@@ -2,7 +2,9 @@ import discord
 from discord.ext import commands, tasks
 from database import *
 import schedule
+from discord.ext import commands,tasks
 import time
+from itertools import cycle
 import config
 
 # List of Study Voice Channels in the server
@@ -21,11 +23,15 @@ bot_image_url = "https://i.pinimg.com/564x/c9/4e/e1/c94ee183a2e635e5b8972bc0240a
 # Replace with your study text channel ID. Takes an integer.
 study_text_channel = 817450164234878987
 
+status = cycle(['With Google','With Discord'])
+
+@tasks.loop(seconds=10)
+async def change_status():
+    await client.change_presence(activity=discord.Game(f'{next(status)} | +help'))  
 
 # Prints a message once bot becomes ready
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Game("+help"))
     print(f'{client.user} is running')
     reset.start()
 
@@ -45,7 +51,7 @@ async def reset():
 # Shows the ping (in mili-seconds) of the bot
 @client.command()
 async def ping(ctx):
-    await ctx.send(f'pong : {round(client.latency * 1000)} ms')
+    await ctx.send(f'Pong : {round(client.latency * 1000)} ms')
 
 
 # Returns embeded text of a member's overall data
