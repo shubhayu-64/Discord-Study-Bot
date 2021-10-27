@@ -68,7 +68,8 @@ Please open an issue with your feature idea.
 
 ## 🙋‍♂️ Support
 
-💙 If you like this project, give it a ⭐ and share it with friends!<br><br>
+💙 If you like this project, give it a ⭐, share it with friends!<br><br>
+Feel free to Sponsor this project. ❤️
 [☕ Buy me a coffee](https://www.buymeacoffee.com/shubhayu64)
 
 ---
